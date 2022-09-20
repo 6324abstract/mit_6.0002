@@ -10,17 +10,20 @@
 import unittest
 from graph import Digraph, Node, WeightedEdge
 
+
 #
 # Problem 2: Building up the Campus Map
 #
 # Problem 2a: Designing your graph
 #
-# What do the graph's nodes represent in this problem? What
-# do the graph's edges represent? Where are the distances
-# represented?
+# What do the graph's nodes represent in this problem?
+# What do the graph's edges represent?
+# Where are the distances represented?
 #
 # Answer:
-#
+# nodes are represented by start and destination building as start and destination, respectively
+# An edge exists between two nodes when they are within the same line
+# Distance in meter and distance outdoors
 
 
 # Problem 2b: Implementing load_map
@@ -44,21 +47,33 @@ def load_map(map_filename):
     """
 
     # TODO
-    print("Loading map from file...")
+    mit_map = Digraph()
+    with open(map_filename) as map_file:
+        map_info = map_file.read().splitlines()
+    for info in map_info:
+        src, dest, total_distance, outdoor_distance = list(map(int, info.split(' ')))
+        weight_edge = WeightedEdge(src, dest, total_distance, outdoor_distance)
+        # check existence
+        if not (mit_map.has_node(src)):
+            mit_map.add_node(src)
+        if not (mit_map.has_node(dest)):
+            mit_map.add_node(dest)
+        mit_map.add_edge(weight_edge)
+    return mit_map
 
-# Problem 2c: Testing load_map
+
+# Problem 2c: Testing load_map UnSoled!
 # Include the lines used to test load_map below, but comment them out
-
-
 #
-# Problem 3: Finding the Shorest Path using Optimized Search Method
+# Problem 3: Finding the Shortest Path using Optimized Search Method
 #
 # Problem 3a: Objective function
 #
 # What is the objective function for this problem? What are the constraints?
 #
 # Answer:
-#
+# p minimize f(p)
+# where outdoor(p)<max_dist_outdoors
 
 # Problem 3b: Implement get_best_path
 def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,

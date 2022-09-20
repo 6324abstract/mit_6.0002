@@ -1,10 +1,11 @@
 # 6.0002 Problem Set 5
 # Graph optimization
-# Name:
+# Name: Yanzhe Li
 # Collaborators:
 # Time:
 
 import unittest
+
 
 #
 # A set of data structures to represent graphs
@@ -12,6 +13,7 @@ import unittest
 
 class Node(object):
     """Represents a node in the graph"""
+
     def __init__(self, name):
         self.name = str(name)
 
@@ -39,6 +41,7 @@ class Node(object):
 class Edge(object):
     """Represents an edge in the dictionary. Includes a source and
     a destination."""
+
     def __init__(self, src, dest):
         self.src = src
         self.dest = dest
@@ -55,20 +58,24 @@ class Edge(object):
 
 class WeightedEdge(Edge):
     def __init__(self, src, dest, total_distance, outdoor_distance):
-        pass  # TODO
+        self.src = src
+        self.dest = dest
+        self.total_distance = total_distance
+        self.outdoor_distance = outdoor_distance
 
     def get_total_distance(self):
-        pass  # TODO
+        return self.total_distance
 
     def get_outdoor_distance(self):
-        pass  # TODO
+        return self.outdoor_distance
 
     def __str__(self):
-        pass  # TODO
+        return f'{self.src}->{self.dest} ({self.total_distance}, {self.outdoor_distance})'
 
 
 class Digraph(object):
     """Represents a directed graph of Node and Edge objects"""
+
     def __init__(self):
         self.nodes = set([])
         self.edges = {}  # must be a dict of Node -> list of edges
@@ -90,13 +97,21 @@ class Digraph(object):
     def add_node(self, node):
         """Adds a Node object to the Digraph. Raises a ValueError if it is
         already in the graph."""
-        pass  # TODO
+
+        if  self.has_node(node):
+            raise ValueError("Node already in the graph")
+        else:
+            self.nodes.add(node)
+            self.edges[node] = []
 
     def add_edge(self, edge):
         """Adds an Edge or WeightedEdge instance to the Digraph. Raises a
         ValueError if either of the nodes associated with the edge is not
         in the  graph."""
-        pass  # TODO
+        if not (self.has_node(edge.get_source()) and self.has_node(edge.get_destination())):
+            raise ValueError("no such edge")
+        else:
+            self.edges[edge.get_source()].append(edge)
 
 
 # ================================================================
