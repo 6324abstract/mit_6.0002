@@ -6,6 +6,7 @@
 
 from ps1_partition import get_partitions
 from functools import reduce
+from itertools import product
 import time
 
 
@@ -83,7 +84,7 @@ def greedy_cow_transport(cows, limit=10):
                 tmp = []
                 continue
 
-    result.append(tmp) # cows left
+    result.append(tmp)  # cows left
     return result
 
 
@@ -109,11 +110,11 @@ def brute_force_cow_transport(cows, limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    # TODO: Your code here
     i = 0
     min_nums_Trip = 999
     result = None
     partitions = get_partitions(cows)  # iterate partitions
+
     for partition in partitions:
         for people in partition:  # iterate list of list
             weight = 0
@@ -121,10 +122,11 @@ def brute_force_cow_transport(cows, limit=10):
             for person in people:  # iterate cow list to get the total weight
                 weight += cows[person]
             if weight > limit:
-                break
-            if len(partition) < min_nums_Trip:
-                min_nums_Trip = len(partition)
-                result = partition
+                isOverweight = True
+        if len(partition) < min_nums_Trip and not isOverweight:
+            min_nums_Trip = len(partition)
+            print(partition)
+            result = partition
 
     return result
 
@@ -147,9 +149,8 @@ def compare_cow_transport_algorithms():
     pass
 
 
-cows = load_cows("ps1_cow_data.txt")
+# test
 
-re = greedy_cow_transport(cows)
-
-#part = brute_force_cow_transport(cows)
-print(re)
+cows = load_cows("ps1_cow_data_simple.txt")
+part = brute_force_cow_transport(cows)
+print(part)
