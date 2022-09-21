@@ -62,18 +62,17 @@ def greedy_cow_transport(cows, limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    # TODO: Your code here
     cur_weight = 0
     tmp, result = [], []
-    sorted_cows = sorted(cows.items(), key=lambda item: item[1], reverse=True)
+    sorted_cows = sorted(cows.items(), key=lambda item: item[1], reverse=True)  # sort cows by weight
     left, right = 0, len(sorted_cows) - 1
 
-    while left <= right:
-        if cur_weight + sorted_cows[left][1] < limit:
+    while left <= right:  # sth wrong with the boundary
+        if cur_weight + sorted_cows[left][1] < limit:  # iterate from heavier ones
             cur_weight += sorted_cows[left][1]
             tmp.append(sorted_cows[left][0])
             left += 1
-        else:
+        else:  # check the lighter side
             if cur_weight + sorted_cows[right][1] <= limit:
                 cur_weight += sorted_cows[right][1]
                 tmp.append(sorted_cows[right][0])
@@ -83,6 +82,8 @@ def greedy_cow_transport(cows, limit=10):
                 result.append(tmp)
                 tmp = []
                 continue
+
+    result.append(tmp) # cows left
     return result
 
 
@@ -150,5 +151,5 @@ cows = load_cows("ps1_cow_data.txt")
 
 re = greedy_cow_transport(cows)
 
-part = brute_force_cow_transport(cows)
-print(part)
+#part = brute_force_cow_transport(cows)
+print(re)
