@@ -73,7 +73,7 @@ def load_map(map_filename):
 #
 # Answer:
 # p minimize f(p)
-# where outdoor(p)<max_dist_outdoors
+# where outdoor(p)<max_dist_outdoors and best_dist(p)<max_total_dist
 
 # Problem 3b: Implement get_best_path
 def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
@@ -111,24 +111,22 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         max_dist_outdoors constraints, then return None.
     """
     # TODO
-    total_dist=0
-    total_dist_outdoor=0
+
     if not (digraph.has_node(start) or digraph.has_node(end)):
         raise ValueError("No such node")
     elif start == end:
-        path[1]=total_dist
-        path[2]=total_dist_outdoor
-        return path
+
+        return path[0]
     else:
         for edges in digraph.get_edges_for_node(start):
             for childnode in edges.get_destination():
                 if childnode not in path[0]:
                     if best_path is None:
-                        new_path=directed_dfs(digraph,childnode,end,best_dist,max_dist_outdoors)
+                        new_path=get_best_path(digraph,childnode,end,path,max_dist_outdoors,best_dist,best_path)
                         if new_path is not None:
                             best_path = new_path
 
-    return best_path
+    return best_path, best_dist
 
 
 # Problem 3c: Implement directed_dfs
@@ -161,6 +159,8 @@ def directed_dfs(digraph, start, end, max_total_dist, max_dist_outdoors):
         max_dist_outdoors constraints, then raises a ValueError.
     """
     # TODO
+    result=[]
+    result=get_best_path(digraph,start,end,[],max_dist_outdoors,best_dist=999,best_path=None)
 
 # ================================================================
 # Begin tests -- you do not need to modify anything below this line
